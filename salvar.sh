@@ -6,4 +6,4 @@ git add .
 git commit -m "alteração feita em:$(date +%d/%m/%Y-%k:%M:%S)"
 git push -u origin master
 git push heroku master
-heroku open --app mighty-inlet-04066
+heroku open --app intense-ocean-02486
