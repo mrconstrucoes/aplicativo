@@ -138,13 +138,7 @@ class Contatos extends React.Component {
 
  							<label htmlFor="telefone">Telefone:</label>
  							<input value={this.state.telefoneContatos.value}  onChange={this.handleChange}  type="tel" id="telefoneContatos" name="telefoneContatos" placeholder="Digite o seu telefone" className="input white border-bottom-blue-twitter-focus" />
-
-							<label  htmlFor="rua">Rua/Avenida:</label>
-							<input value={this.state.ruaContatos.value} onChange={this.handleChange} type="text" id="ruaContatos" name="ruaContatos" placeholder="Digite a rua ou avenida" className="input white border-bottom-blue-twitter-focus" />
-
-							<label htmlFor="numero">Número:</label>
-							<input value={this.state.numeroContatos.value} onChange={this.handleChange} type="number" id="numeroContatos" name="numeroContatos" placeholder="Digite seu número da casa" className="input white border-bottom-blue-twitter-focus" />
-
+							
 							<label htmlFor="estado">Estado:</label>
 							<select value={this.state.estadoContatos.value} onChange={this.handleChange} onClick={() => this.handleClick("estado")}  id="estadoContatos" name="estadoContatos" className="input white border-bottom-blue-twitter-focus" >
 								<option value="">Selecione</option>
@@ -160,6 +154,18 @@ class Contatos extends React.Component {
 									return <option value={item["nome"]}>{item["nome"]}</option>
 								})}
 							</select>
+
+						<div className="grid">		
+							<div className="column-5 margin-left-5">
+								<label  htmlFor="rua">Rua/Avenida:</label>
+								<input value={this.state.ruaContatos.value} onChange={this.handleChange} type="text" id="ruaContatos" name="ruaContatos" placeholder="Digite a rua ou avenida" className="input white border-bottom-blue-twitter-focus" />
+							</div>	
+							<div className="column-5 margin-left-5">
+								<label htmlFor="numero">Número:</label>
+								<input value={this.state.numeroContatos.value} onChange={this.handleChange} type="number" id="numeroContatos" name="numeroContatos" placeholder="Digite seu número da casa" className="input white border-bottom-blue-twitter-focus" />
+							</div>
+						</div>
+							
 
  							<br/>
  							<input type="submit" value="Salvar" className="btn btn-block eggplant" />
