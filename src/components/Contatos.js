@@ -26,13 +26,14 @@ class Contatos extends React.Component {
 			.then((error) => { this.setState({erro: error}); });
 	}
 	handleChange(evento){
-		let continuar = false;
+		let continuar = true;
 		this.state.estados.forEach((estado,id) => {
 			if(estado["nome"] == this.state.estadoContatos.value){
-				continuar = true;
+				continuar = false;
 			}
 		});
-		if(continuar){
+		console.error(continuar);
+		if(continuar == true){
 			let url2 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos+"/distritos";
 			let url3 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos;
 			console.warn(this.state.estadoContatos);
@@ -92,13 +93,14 @@ class Contatos extends React.Component {
 				document.querySelector("#modalSucesso").classList.toggle("display-none");
 		}
 		else if(e == "estado"){
-			let continuar = false;
+			let continuar = true;
 			this.state.estados.forEach((estado,id) => {
 				if(estado["nome"] == this.state.estadoContatos.value){
-					continuar = true;
+					continuar = false;
 				}
 			});
-			if(continuar){
+			console.error(continuar);
+			if(continuar == true){
 				let url2 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos+"/distritos";
 				let url3 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos;
 				console.warn(this.state.estadoContatos);
@@ -155,8 +157,8 @@ class Contatos extends React.Component {
  							<label htmlFor="telefone">Telefone:</label>
  							<input value={this.state.telefoneContatos.value} required onFocus={this.handleChange} onChange={this.handleChange}  type="tel" id="telefoneContatos" name="telefoneContatos" placeholder="Digite o seu telefone" className="input white border-bottom-blue-twitter-focus" />
 							
-							<label htmlFor="estado">Estado:</label>
-							<input list="listaEstados" id="estadoContatos" required name="estadoContatos" value={this.state.estadoContatos.value} onFocus={this.handleChange} onClick={() => this.handleClick("estado")} onChange={this.handleChange} className="input white border-bottom-blue-twitter-focus"/>
+							<label htmlFor="estado">Sigla do Estado:</label>
+							<input list="listaEstados" maxLength="2" id="estadoContatos" required name="estadoContatos" value={this.state.estadoContatos.value} onFocus={this.handleChange} onClick={() => this.handleClick("estado")} onChange={this.handleChange} className="input white border-bottom-blue-twitter-focus"/>
 							<datalist id="listaEstados" name="listaEstados">
 							{this.state.estados.map((item, id) => { 
 								return  <option value={item["sigla"]}>{item["nome"]}</option>;
