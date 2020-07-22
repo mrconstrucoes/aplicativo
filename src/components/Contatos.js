@@ -140,7 +140,7 @@ class Contatos extends React.Component {
           </div>
 
 					<form className="padding-5" id="formulario" onSubmit={this.handleSubmit}>
-						<div className="card padding-5 gray">
+						<div className="card padding-5 light-gray">
 							<h3 className="text-center padding-10">
 								Entrar em contato:
 							</h3>
