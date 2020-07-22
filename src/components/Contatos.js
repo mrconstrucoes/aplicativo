@@ -6,12 +6,38 @@ class Contatos extends React.Component {
 	constructor(props){
 		super(props);
 
-		this.state = { nomeContatos: '', emailContatos: '', telefoneContatos: '' };
+		this.state = { nomeContatos: '', emailContatos: '', telefoneContatos: '', cidadeContatos: '', ruaContatos: '', estadoCompletoContatos: '', estadoContatos: '', numeroContatos: '', cidades: [], estados: [], erro: false };
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
+	componentDidMount(){
+		let url = "https://servicodados.ibge.gov.br/api/v1/localidades/estados";
+    	fetch(url)
+			.then((res) => res.json())
+			.then((resposta) => { this.setState({estados: resposta}); })
+			.then((error) => { this.setState({erro: error}); });
+
+		let url2 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos.value+"/distritos";
+		
+		fetch(url2)
+			.then((res) => res.json())
+			.then((resposta) => { this.setState({cidades: resposta}); })
+			.then((error) => { this.setState({erro: error}); });
+	}
 	handleChange(evento){
+		let url2 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos+"/distritos";
+			let url3 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos;
+			console.warn(this.state.estadoContatos);
+			fetch(url2)
+				.then((res) => res.json())
+				.then((resposta) => { this.setState({cidades: resposta}); })
+				.then((error) => { this.setState({erro: error}); });
+			fetch(url3)
+				.then((res) => res.json())
+				.then((resposta) => {this.setState({estadoCompletoContatos: resposta["nome"]})})
+				.then((error) => { this.setState({erro: error}) });	
+
 		let nome = evento.target.name;
 		let valor = evento.target.value;
 
@@ -23,10 +49,21 @@ class Contatos extends React.Component {
 		console.log("Depoimentos: "+JSON.stringify(this.state));
 		evento.preventDefault();
 
+
+		let objeto = {
+			"nome": this.state.nomeContatos,
+			"email": this.state.emailContatos,
+			"telefone": this.state.telefoneContatos,
+			"cidade": this.state.cidadeContatos,
+			"estado": this.state.estadoCompletoContatos,
+			"rua": this.state.ruaContatos,
+			"numero": this.state.numeroContatos
+		};
+
 		const requestOptions = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(this.state)
+			body: JSON.stringify(objeto)
 		};
 
 		fetch("https://apimrconstrucoes.herokuapp.com/contatos", requestOptions)
@@ -45,6 +82,19 @@ class Contatos extends React.Component {
 		}
 		else if(e == "fechar"){
 				document.querySelector("#modalSucesso").classList.toggle("display-none");
+		}
+		else if(e == "estado"){
+			let url2 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos+"/distritos";
+			let url3 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos;
+			console.warn(this.state.estadoContatos);
+			fetch(url2)
+				.then((res) => res.json())
+				.then((resposta) => { this.setState({cidades: resposta}); })
+				.then((error) => { this.setState({erro: error}); });
+			fetch(url3)
+				.then((res) => res.json())
+				.then((resposta) => {this.setState({estadoCompletoContatos: resposta["nome"]})})
+				.then((error) => { this.setState({erro: error}) });				
 		}
 	}
 	render(){
@@ -89,10 +139,34 @@ class Contatos extends React.Component {
  							<label htmlFor="telefone">Telefone:</label>
  							<input value={this.state.telefoneContatos.value}  onChange={this.handleChange}  type="tel" id="telefoneContatos" name="telefoneContatos" placeholder="Digite o seu telefone" className="input white border-bottom-blue-twitter-focus" />
 
+							<label  htmlFor="rua">Rua/Avenida:</label>
+							<input value={this.state.ruaContatos.value} onChange={this.handleChange} type="text" id="ruaContatos" name="ruaContatos" placeholder="Digite a rua ou avenida" className="input white border-bottom-blue-twitter-focus" />
+
+							<label htmlFor="numero">Número:</label>
+							<input value={this.state.numeroContatos.value} onChange={this.handleChange} type="number" id="numeroContatos" name="numeroContatos" placeholder="Digite seu número da casa" className="input white border-bottom-blue-twitter-focus" />
+
+							<label htmlFor="estado">Estado:</label>
+							<select value={this.state.estadoContatos.value} onChange={this.handleChange} onClick={() => this.handleClick("estado")}  id="estadoContatos" name="estadoContatos" className="input white border-bottom-blue-twitter-focus" >
+								<option value="">Selecione</option>
+							{this.state.estados.map((item, id) => { 
+								return  <option value={item["sigla"]}>{item["nome"]}</option>;
+							})}		
+							</select>
+
+							<label htmlFor="cidade">Cidade:</label>
+							<select value={this.state.cidadeContatos.value}  onChange={this.handleChange} id="cidadeContatos" name="cidadeContatos" className="input white border-bottom-blue-twitter-focus">
+								<option value="">Selecione</option>
+								{this.state.cidades.map((item, id) => {
+									return <option value={item["nome"]}>{item["nome"]}</option>
+								})}
+							</select>
+
  							<br/>
  							<input type="submit" value="Salvar" className="btn btn-block eggplant" />
  						</div>
 					</form>
+
+
 				</section>;
 	}
 }
