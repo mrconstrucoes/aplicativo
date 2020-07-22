@@ -158,7 +158,7 @@ class Contatos extends React.Component {
  							<input value={this.state.telefoneContatos.value} required onFocus={this.handleChange} onChange={this.handleChange}  type="tel" id="telefoneContatos" name="telefoneContatos" placeholder="Digite o seu telefone" className="input white border-bottom-blue-twitter-focus" />
 							
 							<label htmlFor="estado">Sigla do Estado:</label>
-							<input list="listaEstados" maxLength="2" id="estadoContatos" required name="estadoContatos" value={this.state.estadoContatos.value} onFocus={this.handleChange} onClick={() => this.handleClick("estado")} onChange={this.handleChange} className="input white border-bottom-blue-twitter-focus"/>
+							<input list="listaEstados" maxLength="2" id="estadoContatos" required name="estadoContatos" value={this.state.estadoContatos.value} onFocus={this.handleChange} onClick={() => this.handleClick("estado")} placeholder="Digite a sigla do seu estado" onChange={this.handleChange} className="input white border-bottom-blue-twitter-focus"/>
 							<datalist id="listaEstados" name="listaEstados">
 							{this.state.estados.map((item, id) => { 
 								return  <option value={item["sigla"]}>{item["nome"]}</option>;
@@ -166,7 +166,7 @@ class Contatos extends React.Component {
 							</datalist>
 
 							<label htmlFor="cidade">Cidade:</label>
-							<input list="listaCidades" required value={this.state.cidadeContatos.value} onFocus={this.handleChange}  onChange={this.handleChange} id="cidadeContatos" name="cidadeContatos" className="input white border-bottom-blue-twitter-focus" />
+							<input list="listaCidades" required value={this.state.cidadeContatos.value} onFocus={this.handleChange}  onChange={this.handleChange} id="cidadeContatos" placeholder="Digite a sua cidade" name="cidadeContatos" className="input white border-bottom-blue-twitter-focus" />
 							<datalist id="listaCidades" name="listaCidades">
 								{this.state.cidades.map((item, id) => {
 									return <option value={item["nome"]}>{item["nome"]}</option>
