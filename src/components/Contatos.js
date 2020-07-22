@@ -26,7 +26,14 @@ class Contatos extends React.Component {
 			.then((error) => { this.setState({erro: error}); });
 	}
 	handleChange(evento){
-		let url2 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos+"/distritos";
+		let continuar = false;
+		this.state.estados.forEach((estado,id) => {
+			if(estado["nome"] == this.state.estadoContatos.value){
+				continuar = true;
+			}
+		});
+		if(continuar){
+			let url2 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos+"/distritos";
 			let url3 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos;
 			console.warn(this.state.estadoContatos);
 			fetch(url2)
@@ -37,6 +44,7 @@ class Contatos extends React.Component {
 				.then((res) => res.json())
 				.then((resposta) => {this.setState({estadoCompletoContatos: resposta["nome"]})})
 				.then((error) => { this.setState({erro: error}) });	
+		}
 
 		let nome = evento.target.name;
 		let valor = evento.target.value;
@@ -84,17 +92,25 @@ class Contatos extends React.Component {
 				document.querySelector("#modalSucesso").classList.toggle("display-none");
 		}
 		else if(e == "estado"){
-			let url2 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos+"/distritos";
-			let url3 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos;
-			console.warn(this.state.estadoContatos);
-			fetch(url2)
-				.then((res) => res.json())
-				.then((resposta) => { this.setState({cidades: resposta}); })
-				.then((error) => { this.setState({erro: error}); });
-			fetch(url3)
-				.then((res) => res.json())
-				.then((resposta) => {this.setState({estadoCompletoContatos: resposta["nome"]})})
-				.then((error) => { this.setState({erro: error}) });				
+			let continuar = false;
+			this.state.estados.forEach((estado,id) => {
+				if(estado["nome"] == this.state.estadoContatos.value){
+					continuar = true;
+				}
+			});
+			if(continuar){
+				let url2 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos+"/distritos";
+				let url3 = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+this.state.estadoContatos;
+				console.warn(this.state.estadoContatos);
+				fetch(url2)
+					.then((res) => res.json())
+					.then((resposta) => { this.setState({cidades: resposta}); })
+					.then((error) => { this.setState({erro: error}); });
+				fetch(url3)
+					.then((res) => res.json())
+					.then((resposta) => {this.setState({estadoCompletoContatos: resposta["nome"]})})
+					.then((error) => { this.setState({erro: error}) });	
+			}
 		}
 	}
 	render(){
@@ -124,49 +140,48 @@ class Contatos extends React.Component {
           </div>
 
 					<form className="padding-5" id="formulario" onSubmit={this.handleSubmit}>
-						<div className="card padding-5 light-gray">
+						<div className="card padding-5 gray">
 							<h3 className="text-center padding-10">
 								Entrar em contato:
 							</h3>
 
 							<label htmlFor="nome">Nome:</label>
-							<input value={this.state.nomeContatos.value} onChange={this.handleChange}  type="text" id="nomeContatos" name="nomeContatos" placeholder="Digite seu nome completo" className="input white border-bottom-blue-twitter-focus" />
+							<input value={this.state.nomeContatos.value} required onFocus={this.handleChange} onChange={this.handleChange}  type="text" id="nomeContatos" name="nomeContatos" placeholder="Digite seu nome completo" className="input white border-bottom-blue-twitter-focus" />
 
 
  							<label htmlFor="email">Email:</label>
- 							<input value={this.state.emailContatos.value} onChange={this.handleChange}  type="email" id="emailContatos" name="emailContatos" placeholder="Digite seu email" className="input white  border-bottom-blue-twitter-focus" />
+ 							<input value={this.state.emailContatos.value} onFocus={this.handleChange} onChange={this.handleChange}  type="email" id="emailContatos" name="emailContatos" placeholder="Digite seu email" className="input white  border-bottom-blue-twitter-focus" />
 
  							<label htmlFor="telefone">Telefone:</label>
- 							<input value={this.state.telefoneContatos.value}  onChange={this.handleChange}  type="tel" id="telefoneContatos" name="telefoneContatos" placeholder="Digite o seu telefone" className="input white border-bottom-blue-twitter-focus" />
+ 							<input value={this.state.telefoneContatos.value} required onFocus={this.handleChange} onChange={this.handleChange}  type="tel" id="telefoneContatos" name="telefoneContatos" placeholder="Digite o seu telefone" className="input white border-bottom-blue-twitter-focus" />
 							
 							<label htmlFor="estado">Estado:</label>
-							<select value={this.state.estadoContatos.value} onChange={this.handleChange} onClick={() => this.handleClick("estado")}  id="estadoContatos" name="estadoContatos" className="input white border-bottom-blue-twitter-focus" >
-								<option value="">Selecione</option>
+							<input list="listaEstados" id="estadoContatos" required name="estadoContatos" value={this.state.estadoContatos.value} onFocus={this.handleChange} onClick={() => this.handleClick("estado")} onChange={this.handleChange} className="input white border-bottom-blue-twitter-focus"/>
+							<datalist id="listaEstados" name="listaEstados">
 							{this.state.estados.map((item, id) => { 
 								return  <option value={item["sigla"]}>{item["nome"]}</option>;
 							})}		
-							</select>
+							</datalist>
 
 							<label htmlFor="cidade">Cidade:</label>
-							<select value={this.state.cidadeContatos.value}  onChange={this.handleChange} id="cidadeContatos" name="cidadeContatos" className="input white border-bottom-blue-twitter-focus">
-								<option value="">Selecione</option>
+							<input list="listaCidades" required value={this.state.cidadeContatos.value} onFocus={this.handleChange}  onChange={this.handleChange} id="cidadeContatos" name="cidadeContatos" className="input white border-bottom-blue-twitter-focus" />
+							<datalist id="listaCidades" name="listaCidades">
 								{this.state.cidades.map((item, id) => {
 									return <option value={item["nome"]}>{item["nome"]}</option>
 								})}
-							</select>
+							</datalist>
 
 						<div className="grid">		
 							<div className="column-5 margin-left-5">
 								<label  htmlFor="rua">Rua/Avenida:</label>
-								<input value={this.state.ruaContatos.value} onChange={this.handleChange} type="text" id="ruaContatos" name="ruaContatos" placeholder="Digite a rua ou avenida" className="input white border-bottom-blue-twitter-focus" />
+								<input value={this.state.ruaContatos.value} required onChange={this.handleChange} onFocus={this.handleChange} type="text" id="ruaContatos" name="ruaContatos" placeholder="Digite a rua ou avenida" className="input white border-bottom-blue-twitter-focus" />
 							</div>	
 							<div className="column-5 margin-left-5">
 								<label htmlFor="numero">Número:</label>
-								<input value={this.state.numeroContatos.value} onChange={this.handleChange} type="number" id="numeroContatos" name="numeroContatos" placeholder="Digite seu número da casa" className="input white border-bottom-blue-twitter-focus" />
+								<input value={this.state.numeroContatos.value} required onChange={this.handleChange} onFocus={this.handleChange} type="number" id="numeroContatos" name="numeroContatos" placeholder="Digite seu número da casa" className="input white border-bottom-blue-twitter-focus" />
 							</div>
 						</div>
-							
-
+						
  							<br/>
  							<input type="submit" value="Salvar" className="btn btn-block eggplant" />
  						</div>
