@@ -35,7 +35,7 @@ class Cabecalho extends React.Component {
 							<h3 className="text-center">Sobre</h3>
 
 
-							<p className="text-justify text-indent-15">A MRConstruções, fundada por Moisés Ebreu Silva da silva, tem como objetivo
+							<p className="text-justify text-indent-15">A MRConstruções, fundada por Moisés Ebreu Silva da Silva, tem como objetivo
 							prestar serviço de qualidade e de confiança na área da construção civil, com preços acessíveis e finalização do trabalho
 							no prazo determinado.</p>
 
